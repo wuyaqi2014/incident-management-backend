@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-15
  */
 class DataAuthUtilTest {

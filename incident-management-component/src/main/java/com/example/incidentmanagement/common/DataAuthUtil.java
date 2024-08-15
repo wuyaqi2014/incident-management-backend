@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 public class DataAuthUtil {

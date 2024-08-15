@@ -7,7 +7,7 @@ import com.example.incidentmanagement.domain.valueobject.IncidentResult;
 import com.example.incidentmanagement.domain.valueobject.PageInfo;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 public interface IncidentService {
@@ -18,7 +18,7 @@ public interface IncidentService {
 
     boolean deleteIncident(Long id, String operator);
 
-//    Incident getIncident(Long id);
+    Incident getIncidentById(Long id);
 
     Page<Incident> listAll(PageInfo pageInfo, String operator);
 

@@ -1,13 +1,14 @@
 package com.example.incidentmanagement.common;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 @Data
@@ -24,12 +25,6 @@ public class Page<T> {
     public Page(int currentPage, int pageSize) {
         this.currentPage = currentPage;
         this.pageSize = pageSize;
-    }
-
-    public Page(int currentPage, int pageSize, long totalCount) {
-        this.currentPage = currentPage;
-        this.pageSize = pageSize;
-        this.totalCount = totalCount;
     }
 
     @JsonIgnore

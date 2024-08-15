@@ -5,7 +5,7 @@ import com.example.incidentmanagement.domain.valueobject.PageInfo;
 import com.example.incidentmanagement.persisitence.entity.Incident;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 public interface IncidentRepository {
@@ -19,6 +19,8 @@ public interface IncidentRepository {
     Page<Incident> listAll(PageInfo pageInfo, String operator);
 
     Incident getIncident(Long id, String operator);
+
+    Incident getIncidentById(Long id);
 
     Incident queryIncidentByOperator(String operator, String title);
 

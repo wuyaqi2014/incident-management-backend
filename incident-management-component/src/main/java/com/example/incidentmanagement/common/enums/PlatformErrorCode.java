@@ -4,7 +4,7 @@ import com.example.incidentmanagement.common.PlatformException;
 import org.slf4j.helpers.MessageFormatter;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 public enum PlatformErrorCode {

@@ -17,7 +17,7 @@ import com.example.incidentmanagement.domain.valueobject.UpdateIncidentBuilder;
 import com.example.incidentmanagement.persisitence.entity.Incident;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 @Service
@@ -75,15 +75,13 @@ public class IncidentServiceImpl implements IncidentService {
         return incidentRepository.deleteIncident(incidentID);
     }
 
-//    @Override
-//    public Incident getIncident(Long id) {
-//        incidentRepository.getIncident(id);
-//        return null;
-//    }
+    @Override
+    public Incident getIncidentById(Long id) {
+        return incidentRepository.getIncidentById(id);
+    }
 
     @Override
     public Page<Incident> listAll(PageInfo pageInfo, String operator) {
-
         return incidentRepository.listAll(pageInfo, operator);
     }
 }

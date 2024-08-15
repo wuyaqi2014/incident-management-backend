@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 @Slf4j

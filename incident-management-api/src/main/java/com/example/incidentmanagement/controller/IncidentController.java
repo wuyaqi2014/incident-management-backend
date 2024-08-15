@@ -28,7 +28,7 @@ import com.example.incidentmanagement.vo.IncidentDetail;
 import com.example.incidentmanagement.vo.IncidentResultVO;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 @RestController

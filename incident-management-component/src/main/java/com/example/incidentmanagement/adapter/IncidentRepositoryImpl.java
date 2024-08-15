@@ -17,7 +17,7 @@ import com.example.incidentmanagement.persisitence.entity.Incident;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 @Slf4j
@@ -61,6 +61,12 @@ public class IncidentRepositoryImpl implements IncidentRepository {
         }
         Optional<Incident> incidentOptional = incidentJpaRepository.findByIdAndOperator(id, operator);
         return incidentOptional.orElse(null);
+    }
+
+    @Override
+    public Incident getIncidentById(Long id) {
+        Optional<Incident> result = incidentJpaRepository.findById(id);
+        return result.orElse(null);
     }
 
     @Override

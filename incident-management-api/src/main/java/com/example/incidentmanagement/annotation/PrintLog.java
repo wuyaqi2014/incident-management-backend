@@ -3,7 +3,7 @@ package com.example.incidentmanagement.annotation;
 import java.lang.annotation.*;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 @Target({ElementType.METHOD})

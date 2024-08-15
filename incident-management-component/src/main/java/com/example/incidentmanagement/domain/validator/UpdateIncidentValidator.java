@@ -6,7 +6,7 @@ import com.example.incidentmanagement.persisitence.entity.Incident;
 import lombok.Builder;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 @Builder

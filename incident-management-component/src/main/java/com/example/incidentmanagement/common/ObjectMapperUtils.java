@@ -10,14 +10,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 /**
- * @author wuyaqi <wuyaqi@kuaishou.com>
+ * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 
 public final class ObjectMapperUtils {
 
-    private static final String EMPTY_JSON = "{}";
-    private static final String EMPTY_ARRAY_JSON = "[]";
     private static final ObjectMapper MAPPER;
 
     public ObjectMapperUtils() {
