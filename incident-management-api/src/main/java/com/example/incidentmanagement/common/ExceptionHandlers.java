@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
+import com.alibaba.fastjson.JSON;
 import com.example.incidentmanagement.common.enums.PlatformErrorCode;
 import com.example.incidentmanagement.model.ResponseObject;
 
@@ -61,7 +62,7 @@ public class ExceptionHandlers {
         }
         if (servletRequest instanceof StandardMultipartHttpServletRequest) {
             StandardMultipartHttpServletRequest request = (StandardMultipartHttpServletRequest) servletRequest;
-            log.error("multipart params: {}", ObjectMapperUtils.toJSON(request.getParameterMap()));
+            log.error("multipart params: {}", JSON.toJSONString(request.getParameterMap()));
         }
     }
 

@@ -2,8 +2,6 @@ package com.example.incidentmanagement.common;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -25,10 +23,5 @@ public class Page<T> {
     public Page(int currentPage, int pageSize) {
         this.currentPage = currentPage;
         this.pageSize = pageSize;
-    }
-
-    @JsonIgnore
-    public int getFrom() {
-        return (this.currentPage - 1) * this.pageSize;
     }
 }

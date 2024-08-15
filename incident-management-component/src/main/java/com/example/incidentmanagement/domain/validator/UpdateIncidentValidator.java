@@ -10,7 +10,7 @@ import lombok.Builder;
  * Created on 2024-08-14
  */
 @Builder
-public class UpdateIncidentValidator implements Validator{
+public class UpdateIncidentValidator implements Validator {
 
     private Long incidentId;
 

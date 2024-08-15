@@ -8,15 +8,18 @@
 - **事件内容**：title、discription、startTime、endTime、remark
 - **事件状态**：新建、处理中、已解决、已删除
 - **内存存储**：数据存储在H2本地内存数据库中，没有持久存储。
-- **验证和错误处理**：实现了适当的验证和错误处理机制。
+- **验证和错误处理**：实现了统一的的验证和错误处理机制。
 - **权限校验**：有super管理员权限：admin或者system，非管理员用户只能查看自己创建的事件。
+- **高效的事件查询**：事件表有两个索引：主键id聚簇索引，operator操作人索引，因代码中增加了权限校验，用operator查询的场景比较多。  
+
+
 
 ## 技术栈
 
 - **后端**：Java, Spring Boot
 - **前端**：React
 - **构建工具**：Maven（用于 Java）
-- **其他**：Docker（用于容器化）,k8s(用于集群部署),jmeter(用于监控)，Actuator（用于监控）
+- **其他**：Docker（用于容器化）,k8s(用于集群部署),jmeter(用于监控)，Actuator(用于监控), Axios（用于 React 中的 API 请求）
 
 ## 快速开始
 
@@ -53,7 +56,7 @@
    后端将可在 `http://localhost:8090/rest/v1/incident/test` 访问。
 
 ### 前端设置
-参考[README](https://github.com/wuyaqi2014/incident-management-frontend)
+参考前端项目的[README](https://github.com/wuyaqi2014/incident-management-frontend)
 
 ### 使用 Docker
 
@@ -305,6 +308,8 @@
        "success": true
     }
    ```
+删除一个不存在的事件：
+   ![img_9.png](img_9.png)
 再次查询列表返回结果为空  
    ```bash
     {
@@ -365,7 +370,8 @@ incident-management
 └── vo
     ├── IncidentDetail.java
     └── IncidentResultVO.java
- ```  
+ ``` 
+详细介绍：
 1. IncidentManagementApplication.java：这是Spring Boot应用的主入口点。  
    包含@SpringBootApplication注解，用于启动Spring Boot应用。  
    在此类中，有定义main方法，是应用程序的启动点。  
@@ -392,7 +398,6 @@ incident-management
     │   └── service
     ├── common
     │   ├── DataAuthUtil.java
-    │   ├── ObjectMapperUtils.java
     │   ├── Page.java
     │   ├── PlatformException.java
     │   └── enums
@@ -412,7 +417,6 @@ incident-management
    service/：包含了具体的业务服务类，这些服务类通常使用领域层的对象和适配器层提供的接口来执行业务逻辑。
 3. common/：通用工具和共享资源，包括各种工具类和枚举类型。例如：
    DataAuthUtil.java：可能用于数据权限验证的工具类。
-   ObjectMapperUtils.java：可能用于对象序列化和反序列化的工具类。
    Page.java：可能用于分页查询的模型类。
    PlatformException.java：自定义异常类，用于表示平台级别的错误。
    enums/：枚举类型，用于定义固定的一系列值，如状态码等。
@@ -428,14 +432,169 @@ incident-management
 使用DDD领域驱动架构，清晰不同层次的功能和责任，使系统更加灵活、易于扩展和测试。
 适配器层的存在允许领域逻辑与外部系统（如数据库、网络服务）的实现细节分离，从而提高了整个系统的内聚性和解耦度。
 
+##  除jdk外的其他依赖包：
+   从以上项目架构能看出来，该项目为父子项目，父pom定义dependencyManagement，管理包的版本，子模块进行实际依赖。
+### 父pom定义的依赖包的版本：
+```plaintext
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>2.0.52</version>
+            </dependency>
+            <!-- JUnit 5 -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.8.2</version> <!-- 更新为最新的版本 -->
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>5.8.2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+ ``` 
+### incident-management-api
+pom依赖主要分为这几类：
+1. api web项目的相关依赖：spring-boot-starter-web、spring-boot-starter-validation、spring-boot-devtools
+2. component模块依赖：com.example.incidentmanagement:incident-management-component
+3. api生成swagger文件的相关依赖：swagger-annotations
+4. 代码中使用@Data、@Builder、@Slf4j等注解，减少java代码中的样板代码，比如getter、setter等，需要引入lombook依赖：lombok
+5. spring自带性能监控：spring-boot-starter-actuator、micrometer-registry-prometheus
+6. json序列化：com.alibaba:fastjson
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.example.incidentmanagement</groupId>
+            <artifactId>incident-management-component</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+    </dependencies>
+ ``` 
+
+
+### incident-management-component
+依赖主要分为这几类：
+1. H2数据库，开源的、前入职的sql数据库引擎，轻量级且高性能：com.h2database:h2  
+2. 与数据库的交互，spirng自带的jpa包：org.springframework.boot:spring-boot-starter-data-jp
+3. StringUtils工具栏：org.apache.commons:commons-lang3
+4. 集合工具包，例如：ImmutableList：com.google.guava:guava
+5. 代码中使用@Data、@Builder、@Slf4j等注解，减少java代码中的样板代码，比如getter、setter等，需要依赖lombook：org.projectlombok:lombok
+6. 单元测试：org.junit.jupiter:junit-jupiter-api，org.junit.jupiter:junit-jupiter-engine，spring-boot-starter-test
+
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit 5 dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+ ``` 
+
+
+##  待改进项：
 以上是该项目的所有后端工作，由于时间原因，还有部分功能待优化：  
 1、功能相关：  
    （1）、添加用户管理功能，目前只支持单用户，后续会添加用户管理功能，支持多用户。  
    （2）、添加事件状态管理功能，目前只支持创建事件，后续会添加事件状态管理功能，根据事件的startTime和endTime进行异步状态扭转。  
    （3）、添加事件查询功能，目前只支持分页查询，后续会添加事件查询功能，支持根据事件ID、title、description、startTime、endTime、status  
 2、权限相关：  
-   （1）、由于没有登录功能，目前所有操作的用户都是"wuyaqi", 查询、编辑都是只能查到操作人为"wuyaqi"的所有事件。  
+   （1）、由于没有登录功能，目前所有操作的用户都是"wuyaqi", 实现了查询、编辑都是只能查到操作人为"wuyaqi"的所有事件。不能动态判断用户角色  
 3、单元测试：  
    （1）、添加单元测试，目前只支持手动测试，单元测试用例较少，后续会添加单元测试，支持自动化测试  
 4、多线程、高并发：  
@@ -443,7 +602,7 @@ incident-management
 5、缓存:   
    （1）、现有的功能：新建、编辑、删除，都需要增加缓存。  
    （2）、查询list，可以增加缓存，但是目前是分页查询，不适合增加缓存。  
-   （3）、像页面上的操作的功能，不适合增加缓存，如果增加缓存，需要增加刷新频率，否则就会出现页面不一致的情况。影响使用。
-   （4）、对外提供的rpc查询接口，比如查全量事件接口，可以适当增加缓存，减少sql的压力。
-6、日志：
+   （3）、像页面上的操作的功能，不适合增加缓存，如果增加缓存，需要增加刷新频率，否则就会出现页面不一致的情况。影响使用。  
+   （4）、对外提供的rpc查询接口，比如查全量事件接口，可以适当增加缓存，减少sql的压力。  
+6、日志：  
    （1）、增加traceId,后续方便查问题。
