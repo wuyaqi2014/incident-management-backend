@@ -1,145 +1,126 @@
 # incident-management
 
-## 介绍
-事件管理系统，包括。
-- 文字
-  - 总标题，章节标题和章节对应的文字内容
-- 图片
-  - 图片和图片标题
-- 表格
-  - 表格和表格标题
-- 参考
-  - 参考
+# 事件管理应用
 
-在这个项目中还有两个部分用到了大模型
-- 使用了[RWKV-Raven-7B](https://huggingface.co/BlinkDL/rwkv-4-raven)对PDF做摘要。
-- 是用了[ChatGLM2-6B](https://github.com/THUDM/ChatGLM2-6B)对参考文献做信息抽取。
-将参考文献结构化成字典的格式，字典包含了”作者“，”标题“，”年份“。
+这是一个简单的事件管理应用，允许用户管理事件。该应用包含一个基于 Spring Boot 的后端和一个基于 React 的前端。用户可以通过 Web 界面添加、修改、删除和查看事件。
 
-在这个项目中还有实现了一个对PDF问答的例子。
+## 特性
 
-以下是这个项目的几个主要文件：
-- ```src/pdf_parser.py```：包含了所有 PDF 解析相关代码。
-- ```src/llm_summarizer.py```：包含了大模型摘要相关代码。
-- ```src/llm_extractor.py```：包含了大模型对参考文献做信息抽取相关代码。
-- ```src/main.py```：包含了一些示例代码，展示了如何使用 ```src/pdf_parser.py``` 中的功能。
-- ```src/utils.py```: 包含了一些工具函数。
-- ```src/app.py```: 包含了一个用```streamlit```和```langchain```做PDF问答的例子。
-- ```config.ini```：包含了大模型文件路径和相关的tokenizer文件路径。
+- **事件管理**：创建、更新、删除和查看事件。
+- **内存存储**：数据存储在H2本地内存数据库中，没有持久存储。
+- **RESTful API**：后端提供了用于事件管理的 RESTful API。
+- **React 前端**：一个简单的 Web 界面，用于与 API 交互。
+- **验证和错误处理**：实现了适当的验证和错误处理机制。
 
+## 技术栈
 
-## 使用
+- **后端**：Java, Spring Boot
+- **前端**：React
+- **构建工具**：Maven（用于 Java），npm（用于 React）
+- **其他**：Docker（用于容器化）,k8s(用于集群部署）,jmeter(用于监控)，Actuator（用于监控）,Axios（用于 React 中的 API 请求）
 
-关于PDF解析的具体例子请参考 ```src/main.py```。
-关于PDF问答请参考```src/app.py```。
+## 快速开始
 
+### 先决条件
 
-**初始化**
+- Java 11 或更高版本
+- Node.js（v14 或更高版本）和 npm
+- Maven
 
-首先初始化一个类并讲需要解析的PDF文件路径传入到该类。
+### 后端设置
 
-```
-from parser import PDFParser
+1. **克隆仓库：**
 
-pdf_path = '/home/data/gpt-4.pdf'
-parser = PDFParser(pdf_path)
-```
+    ```bash
+    git clone <repository-url>
+    cd incident-management
+    ```
 
-**获取文字：标题，章节名称和对应的文字内容**
+2. **构建后端：**
 
-```
-import json
+   使用 Maven 构建 Spring Boot 后端。
 
-parser.extract_text()
-# 指定保存的文件路径
-json_file_path = '/home/text/sections.json'
-with open(json_file_path, 'w') as json_file:
-    json.dump(parser.text.section, json_file)
-```
+    ```bash
+    mvn clean package
+    ```
 
-**获取图片：图片和对应的标题**
+3. **运行后端：**
 
-```
-parser.extract_images()
+   你可以直接从终端运行 Spring Boot 应用。
 
-images = parser.images
-for image in images:
-    # 将图像保存为文件
-    image_filename = f"/home/image/image_{image.page_num}_{image.title[:10]}.png"
-    with open(image_filename, "wb") as image_file:
-        logging.info(image.title)
-        logging.info(image.page_num)
-        image_file.write(image.image_data)
-```
+    ```bash
+    mvn spring-boot:run
+    ```
 
-**获取表格：表格和对应的标题**
+   后端将可在 `http://localhost:8080` 访问。
 
-```
-parser.extract_tables()
-for i, table in enumerate(parser.tables):
-    csv_filename = "/home/table/table_i_{table.page_num}_{table.title[:10]}.csv"
-    table.table_data.to_csv(csv_filename)
-```
+### 前端设置
 
-**获取参考**
+1. **导航到前端目录：**
 
-```
-parser.extract_references()
-with open('/home/reference/references.txt', 'w') as fp:
-    for ref in parser.references:
-        fp.write("%s\n" % ref.ref)
-```
+    ```bash
+    cd incident-management-frontend
+    ```
 
-**获取参考的信息：作者，标题，年份**
+2. **安装依赖：**
 
-```
-from parser import PDFParser
-from llm_extractor import LLMExtractor
-from tqdm import tqdm
+   使用 npm 安装所需的依赖。
 
-parser.extract_references()
+    ```bash
+    npm install
+    ```
 
-llm_extractor = LLMExtractor()
-for i, ref in enumerate(tqdm(parser.references)):
-    json_ref = llm_extractor.extract_reference(ref)
-    if json_ref and len(json_ref) > 0:
-        with open('/home/reference/{i}.json', 'w') as outfile:
-            json.dump(json_ref, outfile)
-```
+3. **运行前端：**
 
-**获取摘要**
+   启动 React 开发服务器。
 
-```
-from llm_summarizer import LLMSummarizer
+    ```bash
+    npm start
+    ```
 
-llm_summarizer = LLMSummarizer()
-summary = llm_summarizer.summarize(pdf_path)
-```
+   前端将可在 `http://localhost:3000` 访问，并将请求代理到后端。
 
-**运行PDF问答**
-```
-streamlit run app.py --server.fileWatcherType none
-```
+### 使用 Docker
 
+你可以使用 Docker 来容器化应用。
 
-这个项目用到的是大模型是[RWKV-Raven-7B](https://huggingface.co/BlinkDL/rwkv-4-raven)，
-[ChatGLM2-6B](https://github.com/THUDM/ChatGLM2-6B)
-需要在config.ini文件中设置相关的模型文件路径和tokenizer文件路径。
-以下是config.ini的文件内容
+1. **构建 Docker 镜像：**
 
-```
-[LLM]
-rwkv_model_path=/data/model/rwkv_model/RWKV-4-Raven-7B-v12-Eng49%%-Chn49%%-Jpn1%%-Other1%%-20230530-ctx8192.pth
-rwkv_tokenizer_path=/data/model/rwkv_model/20B_tokenizer.json
-chatglm2_6b_path=/data/model/chatglm2-6b
-```
+   在后端目录中：
 
-## 总结
+    ```bash
+    docker build -t incident-management .
+    ```
 
-由于时间关系目前的PDF解析还存在需要优化的地方。
-- 表格解析：开发中发现表格解析很有挑战。
-目前使用的库是[PyMuPDF](https://pymupdf.readthedocs.io/en/latest/)，还是有不少表格提错的地方，计划尝试其他多模态的框架，
-例如 [LayoutLM](https://huggingface.co/docs/transformers/model_doc/layoutlm) [table-transformer](https://github.com/microsoft/table-transformer) [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/table/README.md)。
-- 图表解析：可以尝试一些基于大模型的库可来解析图表，例如 [DePlot](https://huggingface.co/docs/transformers/main/model_doc/deplot)。
-- 时间关系这里用了两个不同的大模型：```RWKV-Raven-7B```和```ChatGLM2-6B``` 分别做摘要和信息抽取，可以考虑只用一个大模型。
-- PDF结构化后，可以用大模型对结构化好的部位做问答，为了让问答更有效率我们需要将结构化的内容做切分然后存入向量库。
+2. **运行容器：**
+
+    ```bash
+    docker run -p 8080:8080 incident-management
+    ```
+
+   现在，后端将可在 `http://localhost:8080` 访问。
+
+## API 端点
+
+后端提供了以下 RESTful API 端点：
+
+- `GET /api/incidents`：列出所有事件。
+- `POST /rest/v1/incident/create_incident`：创建一个新事件。
+- `PUT /rest/v1/incident/update_incident/{id}`：更新一个现有事件。
+- `PUT /rest/v1/incident/delete_incident/{id}`：按 ID 删除一个事件。
+
+### 示例 API 请求
+
+以下是使用 `curl` 创建新事件的示例：
+
+```bash
+curl --location --request POST 'http://localhost:8080/rest/v1/incident/create_incident' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "title": "title2",
+    "description": "description1",
+    "startTime": 1723651200000,
+    "endTime": 1723737600000,
+    "remark": "remark"
+}'
+
