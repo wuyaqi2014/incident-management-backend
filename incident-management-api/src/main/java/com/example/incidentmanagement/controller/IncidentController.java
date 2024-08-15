@@ -3,6 +3,8 @@ package com.example.incidentmanagement.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import com.example.incidentmanagement.annotation.PrintLog;
 import com.example.incidentmanagement.application.service.IncidentService;
 import com.example.incidentmanagement.common.ApiConstant;
 import com.example.incidentmanagement.common.Page;
+import com.example.incidentmanagement.common.enums.PlatformErrorCode;
 import com.example.incidentmanagement.domain.valueobject.IncidentRequest;
 import com.example.incidentmanagement.domain.valueobject.IncidentResult;
 import com.example.incidentmanagement.model.ResponseObject;
@@ -24,8 +27,10 @@ import com.example.incidentmanagement.param.IncidentParam;
 import com.example.incidentmanagement.param.PageParam;
 import com.example.incidentmanagement.persisitence.entity.Incident;
 import com.example.incidentmanagement.sso.SSOUtil;
+import com.example.incidentmanagement.validator.CustomerValidator;
 import com.example.incidentmanagement.vo.IncidentDetail;
 import com.example.incidentmanagement.vo.IncidentResultVO;
+import com.example.incidentmanagement.vo.ValidationResult;
 
 /**
  * @author wuyaqi <wuyaqi_2014@qq.com>
@@ -41,6 +46,10 @@ public class IncidentController {
     @PostMapping("/create_incident")
     @PrintLog
     public ResponseObject<IncidentResultVO> createIncident(@RequestBody IncidentParam param) {
+        ValidationResult validationResult = CustomerValidator.validateParam(param);
+        if (validationResult.isHasError()) {
+            return ResponseObject.ofErrorCodeWithMessageAndTrace(PlatformErrorCode.PARAM_ERROR, validationResult.getErrorMsg());
+        }
         IncidentRequest incidentRequest = param.convertToIncidentRequest();
         IncidentResult incidentResult = incidentService.createIncident(incidentRequest, SSOUtil.getUserName());
         return ResponseObject.ofOk(new IncidentResultVO(incidentResult));
@@ -51,6 +60,10 @@ public class IncidentController {
     @PrintLog
     public ResponseObject<IncidentResultVO> updateCreative(@PathVariable(value = "id") Long incidentId,
                                                            @RequestBody IncidentParam param) {
+        ValidationResult validationResult = CustomerValidator.validateParam(param);
+        if (validationResult.isHasError()) {
+            return ResponseObject.ofErrorCodeWithMessageAndTrace(PlatformErrorCode.PARAM_ERROR, validationResult.getErrorMsg());
+        }
         IncidentRequest incidentRequest = param.convertToIncidentRequest();
         IncidentResult incidentResult = incidentService.updateIncident(incidentId, incidentRequest, SSOUtil.getUserName());
         return ResponseObject.ofOk(new IncidentResultVO(incidentResult));
@@ -65,7 +78,7 @@ public class IncidentController {
 
     @PostMapping("/incident_list_all")
     @PrintLog
-    public ResponseObject<Page<IncidentDetail>> listAllIncident(@RequestBody PageParam param) {
+    public ResponseObject<Page<IncidentDetail>> listAllIncident(@RequestBody @Valid PageParam param) {
         Page<IncidentDetail> ans = new Page<>(param.getPage(), param.getPageSize());
         Page<Incident> page = incidentService.listAll(param.convert(), SSOUtil.getUserName());
         if (CollectionUtils.isEmpty(page.getData())) {

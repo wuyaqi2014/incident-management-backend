@@ -1,5 +1,6 @@
 package com.example.incidentmanagement.param;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -16,19 +17,21 @@ import lombok.Data;
 public class IncidentParam {
 
     @ApiModelProperty(value = "title")
-    @NotNull
+    @NotBlank(message = "title不能为空")
     private String title;
 
     @ApiModelProperty(value = "description")
-    @NotNull
+    @NotBlank(message = "description不能为空")
     private String description;
 
-    @ApiModelProperty(value = "startTime,毫秒事件戳")
-    @NotNull
+    @ApiModelProperty(value = "startTime,毫秒时间戳")
+    @NotNull(message = "startTime不能为空")
     @Positive
     private Long startTime;
 
-    @ApiModelProperty(value = "endTime，毫秒事件戳")
+    @ApiModelProperty(value = "endTime，毫秒时间戳")
+    @NotNull(message = "endTime不能为空")
+    @Positive
     private Long endTime;
 
     @ApiModelProperty(value = "remark")

@@ -39,7 +39,6 @@ public class IncidentServiceImpl implements IncidentService {
                 .incidentRequest(incidentRequest)
                 .build().build();
         incidentRepository.createIncident(incident);
-        // todo 获取保存成功的主键ID，注意下如何获取
         return IncidentResult.success(incident.getId());
     }
 
