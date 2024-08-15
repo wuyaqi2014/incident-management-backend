@@ -1,7 +1,9 @@
 package com.example.incidentmanagement.domain.valueobject;
 
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 /**
  * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14

@@ -9,7 +9,7 @@ import lombok.Builder;
  * Created on 2024-08-14
  */
 @Builder
-public class CreateIncidentValidator implements Validator{
+public class CreateIncidentValidator implements Validator {
 
     private String operator;
 

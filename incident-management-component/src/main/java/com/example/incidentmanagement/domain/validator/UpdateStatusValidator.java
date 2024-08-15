@@ -1,19 +1,20 @@
 package com.example.incidentmanagement.domain.validator;
 
-import com.example.incidentmanagement.persisitence.entity.Incident;
+import java.util.List;
+
 import com.example.incidentmanagement.common.enums.IncidentStatus;
 import com.example.incidentmanagement.common.enums.PlatformErrorCode;
+import com.example.incidentmanagement.persisitence.entity.Incident;
 import com.google.common.collect.ImmutableList;
-import lombok.Builder;
 
-import java.util.List;
+import lombok.Builder;
 
 /**
  * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
 @Builder
-public class UpdateStatusValidator implements Validator{
+public class UpdateStatusValidator implements Validator {
 
     private Incident incidentDB;
 

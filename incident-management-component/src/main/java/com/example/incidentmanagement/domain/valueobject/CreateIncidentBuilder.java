@@ -2,8 +2,9 @@ package com.example.incidentmanagement.domain.valueobject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.example.incidentmanagement.persisitence.entity.Incident;
 import com.example.incidentmanagement.common.enums.IncidentStatus;
+import com.example.incidentmanagement.persisitence.entity.Incident;
+
 import lombok.Builder;
 
 /**

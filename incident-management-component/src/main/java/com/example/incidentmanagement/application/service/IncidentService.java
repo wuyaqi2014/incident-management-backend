@@ -1,10 +1,10 @@
 package com.example.incidentmanagement.application.service;
 
-import com.example.incidentmanagement.persisitence.entity.Incident;
 import com.example.incidentmanagement.common.Page;
 import com.example.incidentmanagement.domain.valueobject.IncidentRequest;
 import com.example.incidentmanagement.domain.valueobject.IncidentResult;
 import com.example.incidentmanagement.domain.valueobject.PageInfo;
+import com.example.incidentmanagement.persisitence.entity.Incident;
 
 /**
  * @author wuyaqi <wuyaqi_2014@qq.com>

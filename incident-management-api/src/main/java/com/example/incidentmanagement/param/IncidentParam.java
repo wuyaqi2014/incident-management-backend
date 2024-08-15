@@ -1,11 +1,12 @@
 package com.example.incidentmanagement.param;
 
-import com.example.incidentmanagement.domain.valueobject.IncidentRequest;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+
+import com.example.incidentmanagement.domain.valueobject.IncidentRequest;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * @author wuyaqi <wuyaqi_2014@qq.com>

@@ -1,11 +1,12 @@
 package com.example.incidentmanagement.domain.validator;
 
-import com.example.incidentmanagement.common.DataAuthUtil;
-import com.example.incidentmanagement.common.enums.PlatformErrorCode;
-import lombok.Builder;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import com.example.incidentmanagement.common.DataAuthUtil;
+import com.example.incidentmanagement.common.enums.PlatformErrorCode;
+
+import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 /**
  * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14

@@ -1,8 +1,8 @@
 package com.example.incidentmanagement.common.enums;
 
-import com.example.incidentmanagement.common.PlatformException;
 import org.slf4j.helpers.MessageFormatter;
 
+import com.example.incidentmanagement.common.PlatformException;
 /**
  * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14

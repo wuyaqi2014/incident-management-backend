@@ -65,7 +65,7 @@ public class IncidentController {
 
     @PostMapping("/incident_list_all")
     @PrintLog
-    public ResponseObject<Page<IncidentDetail>> listAllIncident(@RequestBody PageParam param){
+    public ResponseObject<Page<IncidentDetail>> listAllIncident(@RequestBody PageParam param) {
         Page<IncidentDetail> ans = new Page<>(param.getPage(), param.getPageSize());
         Page<Incident> page = incidentService.listAll(param.convert(), SSOUtil.getUserName());
         if (CollectionUtils.isEmpty(page.getData())) {

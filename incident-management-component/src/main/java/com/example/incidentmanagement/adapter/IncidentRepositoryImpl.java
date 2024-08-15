@@ -46,7 +46,7 @@ public class IncidentRepositoryImpl implements IncidentRepository {
     @Override
     public Page<Incident> listAll(PageInfo pageInfo, String operator) {
         Page<Incident> page = new Page(pageInfo.getPage(), pageInfo.getPageSize());
-        Pageable pageable = PageRequest.of(pageInfo.getPage() == 0 ? 1 :pageInfo.getPage() - 1, pageInfo.getPageSize());
+        Pageable pageable = PageRequest.of(pageInfo.getPage() == 0 ? 1 : pageInfo.getPage() - 1, pageInfo.getPageSize());
         org.springframework.data.domain.Page<Incident> dataPage = incidentJpaRepository.findAllIncidents(pageable);
         page.setTotalCount(dataPage.getTotalElements());
         page.setData(dataPage.getContent());

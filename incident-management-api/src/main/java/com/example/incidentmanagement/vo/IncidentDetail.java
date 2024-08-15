@@ -1,6 +1,7 @@
 package com.example.incidentmanagement.vo;
 
 import com.example.incidentmanagement.persisitence.entity.Incident;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
