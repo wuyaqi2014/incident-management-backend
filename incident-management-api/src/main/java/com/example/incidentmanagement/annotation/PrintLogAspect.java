@@ -44,12 +44,12 @@ public class PrintLogAspect {
         try {
             Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
             PrintLog printLog = method.getAnnotation(PrintLog.class);
-            log.info("{} method:{} {} 请求参数{}，返回:{}",
+            log.info("{} method:{} {} request param {}，return:{}",
                     SSOUtil.getUserName(), method.getName(), printLog.description(),
                     getArgsString(joinPoint.getArgs()),
                     returnValue.toString());
         } catch (Exception e) {
-            log.error("打印日志异常", e);
+            log.error("Failed to print input parameters", e);
         }
     }
 
@@ -60,15 +60,15 @@ public class PrintLogAspect {
             PrintLog printLog = method.getAnnotation(PrintLog.class);
             log.info("{} method:{} {}  args : {}",
                     SSOUtil.getUserName(), method.getName(),
-                    printLog.description() + "失败", getArgsString(joinPoint.getArgs()));
+                    printLog.description() + "fail ", getArgsString(joinPoint.getArgs()));
         } catch (Exception e) {
-            log.error("打印日志异常", e);
+            log.error("Failed to print input parameters", e);
         }
 
     }
 
     /**
-     * 打印方法入参，过滤掉request response
+     * print input params，filterrequest response
      * @param args
      * @return
      */
@@ -92,7 +92,7 @@ public class PrintLogAspect {
                 return result.toString();
             }
         } catch (Exception e) {
-            log.error("打印入参失败:{}", e);
+            log.error("Failed to print input parameters:{}", e);
         }
         return "";
     }

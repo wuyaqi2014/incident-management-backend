@@ -9,21 +9,21 @@ import com.example.incidentmanagement.common.PlatformException;
  */
 public enum PlatformErrorCode {
 
-    OK(1, "成功"),
+    OK(1, "success"),
 
 
-    // 2~99 前端入参相关异常
-    PARAM_ERROR(2, "参数异常"),
+    // 2~99 front param error
+    PARAM_ERROR(2, "param_error"),
 
 
-    // 100~199 后端相关异常
-    SERVER_ERROR(100, "服务端异常"),
+    // 100~199 backend error
+    SERVER_ERROR(100, "server_error"),
 
 
-    // 200+ 其它异常
-    ENUM_INVALID(200, "无效枚举值"),
+    // 200+ other error
+    ENUM_INVALID(200, "enum_valid"),
 
-    NO_PERMISSION(201, "无操作权限");
+    NO_PERMISSION(201, "no_permission");
 
     private int code;
     private String msg;
@@ -41,10 +41,6 @@ public enum PlatformErrorCode {
         return this.msg;
     }
 
-    public PlatformException toException() {
-        return PlatformException.ofMessage(code, msg);
-    }
-
     public PlatformException toException(String overrideMsg) {
         return PlatformException.ofMessage(code, overrideMsg);
     }
@@ -52,10 +48,5 @@ public enum PlatformErrorCode {
     public PlatformException toException(String overrideMsg, Object... param) {
         String formatMsg = MessageFormatter.arrayFormat(overrideMsg, param).getMessage();
         return PlatformException.ofMessage(code, formatMsg);
-    }
-
-    public PlatformException toException(String overrideMsg, Throwable throwable, Object... param) {
-        String formatMsg = MessageFormatter.arrayFormat(overrideMsg, param).getMessage();
-        return PlatformException.ofMessageAndThrowable(code, formatMsg, throwable);
     }
 }

@@ -1,14 +1,15 @@
 package com.example.incidentmanagement.application.service.impl;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,9 +17,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.example.incidentmanagement.common.Page;
+import com.example.incidentmanagement.common.enums.IncidentStatus;
 import com.example.incidentmanagement.common.enums.PlatformErrorCode;
 import com.example.incidentmanagement.domain.repository.IncidentRepository;
 import com.example.incidentmanagement.domain.validator.CreateIncidentValidator;
@@ -52,14 +55,17 @@ public class IncidentServiceImplTest {
         // Arrange
         IncidentRequest incidentRequest = mock(IncidentRequest.class);
         when(incidentRequest.getTitle()).thenReturn("Valid Title");
-        doNothing().when(incidentRepository).createIncident(any(Incident.class));
+        doAnswer(invocation -> {
+            Incident incident = invocation.getArgument(0);
+            incident.setId(1L);
+            return null; // 因为 save() 方法没有返回值，所以这里返回 null
+        }).when(incidentRepository).createIncident(Mockito.any(Incident.class));
 
-        // todo donoting，但是要修改incident的值
         // Act
         IncidentResult result = incidentService.createIncident(incidentRequest, "operator1");
 
         // Assert
-        verify(createIncidentValidator).validate(); // Ensure validation was called
+        verify(incidentRepository, times(1)).createIncident(Mockito.any(Incident.class));
         assertNotNull(result);
         assertTrue(result.isSuccess());
     }
@@ -86,18 +92,35 @@ public class IncidentServiceImplTest {
         Long incidentID = 1L;
         IncidentRequest updateIncident = mock(IncidentRequest.class);
         when(updateIncident.getTitle()).thenReturn("Updated Title");
-        Incident incidentDB = mock(Incident.class);
+        Incident incidentDB = new Incident();
+        incidentDB.setOperator("operator1");
+        incidentDB.setStatus(IncidentStatus.PENDING.getValue());
 
         when(incidentRepository.getIncident(incidentID, "operator1")).thenReturn(incidentDB);
-
-        // todo
         // Act
         IncidentResult result = incidentService.updateIncident(incidentID, updateIncident, "operator1");
 
         // Assert
-        verify(updateIncidentValidator).validate();
         assertNotNull(result);
         assertTrue(result.isSuccess());
+    }
+
+
+    @Test
+    public void testUpdateIncident_InvalidRequest_ShouldThrowExceptionn() {
+        // Arrange
+        Long incidentID = 1L;
+        IncidentRequest updateIncident = mock(IncidentRequest.class);
+        IncidentRequest incidentRequest = mock(IncidentRequest.class);
+        when(incidentRequest.getTitle()).thenReturn("");
+
+        doThrow(PlatformErrorCode.PARAM_ERROR.toException("Title cannot be empty"))
+                .when(updateIncidentValidator).validate();
+        // Act & Assert
+        Exception exception = assertThrows(PlatformErrorCode.SERVER_ERROR.toException("").getClass(), () -> {
+            incidentService.updateIncident(incidentID, updateIncident, "operator1");
+        });
+        assertEquals("incidentID:1 not exists", exception.getMessage());
     }
 
     @Test

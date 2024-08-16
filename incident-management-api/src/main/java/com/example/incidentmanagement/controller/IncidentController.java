@@ -86,7 +86,9 @@ public class IncidentController {
         }
         List<IncidentDetail> list = new ArrayList<>();
         for (Incident incident : page.getData()) {
-            list.add(new IncidentDetail(incident));
+            if (incident != null) {
+                list.add(new IncidentDetail(incident));
+            }
         }
         ans.setTotalCount(page.getTotalCount());
         ans.setData(list);

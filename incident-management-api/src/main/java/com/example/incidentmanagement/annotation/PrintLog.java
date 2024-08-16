@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Documented
 public @interface PrintLog {
     /**
-     * 应用在方法上，描述此操作，比如编辑事件，新建事件
+     * Apply to method, describing actions such as editing events, creating events.
      * @return
      */
     String description() default "";

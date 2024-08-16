@@ -21,11 +21,9 @@ public class IncidentDetail {
     @ApiModelProperty(value = "description")
     private String description;
 
-    // 状态 toto 增加状态枚举
     @ApiModelProperty(value = "status")
     private int status;
 
-    // 事件开始时间
     @ApiModelProperty(value = "startTime")
     private Long startTime;
 
@@ -48,6 +46,9 @@ public class IncidentDetail {
     private Long updatedTime;
 
     public IncidentDetail(Incident incident) {
+        if (incident == null) {
+            return;
+        }
         this.id = incident.getId();
         this.title = incident.getTitle();
         this.description = incident.getDescription();

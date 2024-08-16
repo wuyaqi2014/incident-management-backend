@@ -1,7 +1,9 @@
 package com.example.incidentmanagement.domain.valueobject;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author wuyaqi <wuyaqi_2014@qq.com>
@@ -9,13 +11,15 @@ import lombok.Data;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class IncidentResult {
 
-    private long incidentId; // 事件id
+    private long incidentId;
 
-    private boolean success; // 操作结果
+    private boolean success;
 
-    private String tipMsg; // 提示信息
+    private String tipMsg;
 
 
     public static IncidentResult success(long incidentId) {

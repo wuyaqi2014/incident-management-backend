@@ -6,7 +6,7 @@ package com.example.incidentmanagement.sso;
  */
 public class SSOUtil {
     public static String getUserName() {
-        // todo 这里默认：wuyaqi，线上可通过sso获取用户名
+        // todo: the default is wuyaqi. In production, the username can be obtained via SSO
         return "wuyaqi";
     }
 }

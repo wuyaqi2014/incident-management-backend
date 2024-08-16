@@ -17,20 +17,20 @@ import lombok.Data;
 public class IncidentParam {
 
     @ApiModelProperty(value = "title")
-    @NotBlank(message = "title不能为空")
+    @NotBlank(message = "Title cannot be empty")
     private String title;
 
     @ApiModelProperty(value = "description")
-    @NotBlank(message = "description不能为空")
+    @NotBlank(message = "Description cannot be empty")
     private String description;
 
-    @ApiModelProperty(value = "startTime,毫秒时间戳")
-    @NotNull(message = "startTime不能为空")
+    @ApiModelProperty(value = "startTime, in milliseconds timestamp")
+    @NotNull(message = "StartTime cannot be empty")
     @Positive
     private Long startTime;
 
-    @ApiModelProperty(value = "endTime，毫秒时间戳")
-    @NotNull(message = "endTime不能为空")
+    @ApiModelProperty(value = "endTime，in milliseconds timestamp")
+    @NotNull(message = "EndTime cannot be empty")
     @Positive
     private Long endTime;
 

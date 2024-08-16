@@ -34,7 +34,7 @@ public class UpdateIncidentBuilder {
         incidentDB.setEndTime(incidentRequest.getEndTime());
         incidentDB.setRemark(StringUtils.defaultString(incidentRequest.getRemark(), ""));
         incidentDB.setUpdatedBy(operator);
-        incidentDB.setStatus(1); // todo：根据事件判断当前状态
+        incidentDB.setStatus(1); // todo：Determine the current status based on the event
         incidentDB.setUpdatedTime(System.currentTimeMillis());
         return incidentDB;
     }

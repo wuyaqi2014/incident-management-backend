@@ -1,6 +1,7 @@
 package com.example.incidentmanagement.model;
 
 import com.example.incidentmanagement.common.enums.PlatformErrorCode;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,14 +27,6 @@ public class ResponseObject<T> {
         this.result = responseCode;
         this.errorMsg = responseMsg;
         this.data = responseData;
-    }
-
-
-    public static ResponseObject ok() {
-        ResponseObject responseObject = new ResponseObject();
-        responseObject.setResult(PlatformErrorCode.OK.getCode());
-        responseObject.setErrorMsg(PlatformErrorCode.OK.getMsg());
-        return responseObject;
     }
 
     public static <T> ResponseObject<T> ofOk(T t) {

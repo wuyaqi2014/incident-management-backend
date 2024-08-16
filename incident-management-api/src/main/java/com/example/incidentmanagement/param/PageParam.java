@@ -14,10 +14,10 @@ import lombok.Data;
 @Data
 public class PageParam {
     //页号
-    @ApiModelProperty(value = "页号")
+    @ApiModelProperty(value = "pageNo")
     private int page;
     //每页大小
-    @ApiModelProperty(value = "每页大小")
+    @ApiModelProperty(value = "pageSize")
     @Positive
     private int pageSize;
 

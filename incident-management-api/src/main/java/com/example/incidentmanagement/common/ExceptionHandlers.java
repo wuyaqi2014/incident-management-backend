@@ -29,7 +29,7 @@ public class ExceptionHandlers {
     @ExceptionHandler(PlatformException.class)
     @ResponseBody
     public ResponseObject handleThrowable(PlatformException e, ServletRequest servletRequest, HttpServletRequest request) {
-        log.error("BrandException: {}", e.getMessage(), e);
+        log.error("PlatformException: {}", e.getMessage(), e);
         logServletRequestInfo(servletRequest);
         String url = request.getRequestURL()
                 .append(request.getQueryString() == null ? "" : "?" + request.getQueryString())
@@ -48,7 +48,7 @@ public class ExceptionHandlers {
         String url = request.getRequestURL()
                 .append(request.getQueryString() == null ? "" : "?" + request.getQueryString())
                 .toString();
-        // todo 上报异常打点
+        // todo Reporting exception metrics to Prometheus
         // PerfUtils.error(API_EXCEPTION_MONITOR_SUBTAG, url, PlatformErrorCode.SERVER_ERROR.getCode(), e.getMessage(), 1);
         return ResponseObject
                 .ofErrorCodeWithMessageAndTrace(PlatformErrorCode.SERVER_ERROR, e.getMessage());

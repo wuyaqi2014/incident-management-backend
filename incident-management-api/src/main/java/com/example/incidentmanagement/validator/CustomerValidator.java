@@ -47,7 +47,7 @@ public class CustomerValidator {
             return validationResult;
         }
 
-        log.info("注解参数校验结果:{}", JSON.toJSONString(validationResult));
+        log.info("Annotation parameter validation result:{}", JSON.toJSONString(validationResult));
         return validationResult;
     }
 

@@ -31,7 +31,9 @@ public class PermissionValidator implements Validator {
             if (!StringUtils.equals(operator, dbCreator)) {
                 log.info("The creator :{} of the incident id: {} is not consistent with the current operator: {}",
                         incidentId, dbCreator, operator);
-                throw PlatformErrorCode.PARAM_ERROR.toException("Operator: {} does not have permission to edit this incident", operator);            }
+                throw PlatformErrorCode.PARAM_ERROR
+                        .toException("Operator: {} does not have permission to edit this incident", operator);
+            }
         }
     }
 }
