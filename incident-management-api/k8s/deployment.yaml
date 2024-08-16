@@ -16,4 +16,4 @@ spec:
         - name: springboot-app
           image: aqi2024/incident-management-api:latest  # 使用Docker Hub上的镜像
           ports:
-            - containerPort: 8080
+            - containerPort: 8090

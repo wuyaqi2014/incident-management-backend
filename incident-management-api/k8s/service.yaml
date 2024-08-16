@@ -8,5 +8,5 @@ spec:
     app: springboot-app
   ports:
     - port: 8080
-      targetPort: 8080
+      targetPort: 8090
       nodePort: 30007  # 节点端口，配置后可通过此端口访问应用

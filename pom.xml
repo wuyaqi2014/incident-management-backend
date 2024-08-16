@@ -28,7 +28,6 @@
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <guava.version>33.2.1-jre</guava.version>
         <fastjson.version>2.0.52</fastjson.version>
-
     </properties>
 
     <dependencyManagement>
