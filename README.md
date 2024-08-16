@@ -24,7 +24,7 @@
 - [性能测试](#性能测试)
 - [项目架构](#项目架构)
 - [除jdk外的其他依赖包](#除jdk外的其他依赖包)
-- [示例 API 请求](#示例 API 请求)
+- [示例API请求](#示例API请求)
 - [总结](#总结)
 
 
@@ -394,43 +394,42 @@ pom依赖主要分为这几类：
 4. 集合工具包，例如：ImmutableList：com.google.guava:guava
 5. 代码中使用@Data、@Builder、@Slf4j等注解，减少java代码中的样板代码，比如getter、setter等，需要依赖lombook：org.projectlombok:lombok
 6. 单元测试：org.junit.jupiter:junit-jupiter-api，org.junit.jupiter:junit-jupiter-engine，spring-boot-starter-test
-
 ```xml
-<dependencies>
-   <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-   </dependency>
-   <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-   </dependency>
-   <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>runtime</scope>
-   </dependency>
-   <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-   </dependency>
+   <dependencies>
+      <dependency>
+         <groupId>org.apache.commons</groupId>
+         <artifactId>commons-lang3</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>com.google.guava</groupId>
+         <artifactId>guava</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>com.h2database</groupId>
+         <artifactId>h2</artifactId>
+         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-data-jpa</artifactId>
+      </dependency>
 
-   <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <optional>true</optional>
-   </dependency>
+      <dependency>
+         <groupId>org.projectlombok</groupId>
+         <artifactId>lombok</artifactId>
+         <optional>true</optional>
+      </dependency>
 
-   <!-- Test -->
-   <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-   </dependency>
-</dependencies>
- ``` 
+      <!-- Test -->
+      <dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-test</artifactId>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+ ```
 
-## 示例 API 请求
+## 示例API请求
 
 以下是使用 `curl` 创建新事件的示例：
 
