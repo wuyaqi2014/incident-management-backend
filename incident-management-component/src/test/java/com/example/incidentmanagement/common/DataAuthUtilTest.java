@@ -1,6 +1,7 @@
 package com.example.incidentmanagement.common;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -11,31 +12,41 @@ import org.junit.jupiter.api.Test;
 class DataAuthUtilTest {
 
     @Test
-    void testIsSupremeForSupremeAdmin() {
-        // 测试超级管理员用户名
-        assertTrue(DataAuthUtil.isSupreme("system"), "系统超级管理员应该返回true");
-        assertTrue(DataAuthUtil.isSupreme("admin"), "普通超级管理员应该返回true");
+    void testIsSupremeWithSupremeAdmin() {
+        // Test with supreme admin usernames from the list
+        assertTrue(DataAuthUtil.isSupreme("system"), "The system admin 'system' should be recognized as a supreme admin");
+        assertTrue(DataAuthUtil.isSupreme("admin"), "The admin 'admin' should be recognized as a supreme admin");
     }
 
     @Test
-    void testIsSupremeForNonSupremeAdmin() {
-        // 测试非超级管理员用户名
-        assertFalse(DataAuthUtil.isSupreme("regularUser"), "常规用户应该返回false");
-        assertFalse(DataAuthUtil.isSupreme("guest"), "访客用户应该返回false");
+    void testIsSupremeWithNonSupremeAdmin() {
+        // Test with non-supreme admin usernames
+        assertFalse(DataAuthUtil.isSupreme("user1"), "A regular user 'user1' should not be recognized as a supreme admin");
+        assertFalse(DataAuthUtil.isSupreme("manager"), "A manager 'manager' should not be recognized as a supreme admin");
     }
 
     @Test
-    void testIsSupremeForEmptyUserName() {
-        // 测试空或空白用户名
-        assertFalse(DataAuthUtil.isSupreme(""), "空字符串用户名应该返回false");
-        assertFalse(DataAuthUtil.isSupreme(" "), "空白字符串用户名应该返回false");
-        assertFalse(DataAuthUtil.isSupreme(null), "null用户名应该返回false");
+    void testIsSupremeWithCaseInsensitiveMatch() {
+        // Test case-insensitive matching
+        assertTrue(DataAuthUtil.isSupreme("SYSTEM"), "'SYSTEM' should match 'system' and return true");
+        assertTrue(DataAuthUtil.isSupreme("ADMIN"), "'ADMIN' should match 'admin' and return true");
     }
 
     @Test
-    void testIsSupremeForCaseSensitivity() {
-        // 测试大小写敏感性
-        assertFalse(DataAuthUtil.isSupreme("System"), "大小写敏感，System应该返回false");
-        assertFalse(DataAuthUtil.isSupreme("ADMIN"), "大小写敏感，ADMIN应该返回false");
+    void testIsSupremeWithEmptyString() {
+        // Test with an empty string
+        assertFalse(DataAuthUtil.isSupreme(""), "An empty string should return false");
+    }
+
+    @Test
+    void testIsSupremeWithNull() {
+        // Test with null value
+        assertFalse(DataAuthUtil.isSupreme(null), "A null value should return false");
+    }
+
+    @Test
+    void testIsSupremeWithBlankString() {
+        // Test with a blank string (only spaces)
+        assertFalse(DataAuthUtil.isSupreme(" "), "A string containing only spaces should return false");
     }
 }

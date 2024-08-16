@@ -13,7 +13,15 @@ public class DataAuthUtil {
     private static final List<String> SUPREME_ADMIN_LIST = List.of("system", "admin");
 
     public static boolean isSupreme(String userName) {
-        return StringUtils.isNoneBlank(userName) && SUPREME_ADMIN_LIST.contains(userName);
+        if (StringUtils.isBlank(userName)) {
+            return false;
+        }
+        for (String superUser : SUPREME_ADMIN_LIST) {
+            if (StringUtils.equalsIgnoreCase(userName, superUser)) {
+                 return true;
+             }
+        }
+        return false;
     }
 
 }

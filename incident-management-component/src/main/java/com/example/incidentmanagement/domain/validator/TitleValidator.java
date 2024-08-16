@@ -30,21 +30,21 @@ public class TitleValidator implements Validator {
     @Override
     public void validate() {
         if (StringUtils.isBlank(title)) {
-            throw  PlatformErrorCode.PARAM_ERROR.toException("title不能为空");
+            throw PlatformErrorCode.PARAM_ERROR.toException("Title cannot be empty");
         }
-        log.info("title:{}", title);
-        if (title.length() > MAX_NAME_LENGTH * 2) {
-            throw PlatformErrorCode.PARAM_ERROR.toException("title不能大于100个字符");
+        log.info("title: {}", title);
+        if (title.length() > MAX_NAME_LENGTH) {
+            throw PlatformErrorCode.PARAM_ERROR.toException("Title cannot exceed 100 characters");
         }
-        // 同一用户下，title不能重复
-       Incident incidentDB = incidentRepository.queryIncidentByOperator(operator, title);
-        if (incidentId == null) { // 新建
+        // The title must be unique for the same user
+        Incident incidentDB = incidentRepository.queryIncidentByOperator(operator, title);
+        if (incidentId == null) { // Creating new
             if (incidentDB != null) {
-                throw PlatformErrorCode.PARAM_ERROR.toException("同一用户下，title不能重复");
+                throw PlatformErrorCode.PARAM_ERROR.toException("Title must be unique for the same user");
             }
-        } else { // 编辑
+        } else { // Editing existing
             if (incidentDB != null && incidentDB.getId() != null && !incidentDB.getId().equals(incidentId)) {
-                throw PlatformErrorCode.PARAM_ERROR.toException("同一用户下，title不能重复");
+                throw PlatformErrorCode.PARAM_ERROR.toException("Title must be unique for the same user");
             }
         }
     }

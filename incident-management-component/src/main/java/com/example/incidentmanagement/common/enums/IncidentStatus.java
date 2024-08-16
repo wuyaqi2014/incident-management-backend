@@ -5,11 +5,11 @@ package com.example.incidentmanagement.common.enums;
  * Created on 2024-08-14
  */
 public enum IncidentStatus {
-    UNKNOWN(0, "未知"),
-    PENDING(1, "待处理"),
-    IN_PROGRESS(2, "处理中"),
-    RESOLVED(3, "已解决"),
-    DELETED(4, "已删除");
+    UNKNOWN(0, "UNKNOWN"),
+    PENDING(1, "PENDING"),
+    IN_PROGRESS(2, "IN_PROGRESS"),
+    RESOLVED(3, "RESOLVED"),
+    DELETED(4, "DELETED");
 
 
     // 状态码

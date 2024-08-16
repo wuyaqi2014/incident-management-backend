@@ -18,7 +18,6 @@ public class UpdateStatusValidator implements Validator {
 
     private Incident incidentDB;
 
-
     public static final List<Integer> CAN_UPDATE_STATUS_LIST = new ImmutableList.Builder<Integer>()
             .add(IncidentStatus.PENDING.getValue())
             .add(IncidentStatus.IN_PROGRESS.getValue())
@@ -26,9 +25,8 @@ public class UpdateStatusValidator implements Validator {
     @Override
     public void validate() {
         if (!CAN_UPDATE_STATUS_LIST.contains(incidentDB.getStatus())) {
-            throw PlatformErrorCode.SERVER_ERROR.toException("事件状态:{}不可编辑",
+            throw PlatformErrorCode.SERVER_ERROR.toException("Incident status: {} is not editable",
                     IncidentStatus.fromValue(incidentDB.getStatus()).getName());
         }
     }
-
 }

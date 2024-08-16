@@ -19,16 +19,14 @@ public class CreateIncidentValidator implements Validator {
 
     @Override
     public void validate() {
-        // 权限校验
         PermissionValidator.builder()
                 .operator(operator)
                 .build().validate();
-        // title字段长度校验
         TitleValidator.builder()
                 .title(title)
                 .operator(operator)
                 .incidentRepository(incidentRepository)
                 .build().validate();
-        // todo startTime、endTime校验
+        // todo add more validator
     }
 }

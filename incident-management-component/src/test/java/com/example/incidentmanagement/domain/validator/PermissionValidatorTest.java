@@ -12,40 +12,51 @@ import com.example.incidentmanagement.common.PlatformException;
  * @author wuyaqi <wuyaqi_2014@qq.com>
  * Created on 2024-08-14
  */
-//@ExtendWith(MockitoExtension.class)
 class PermissionValidatorTest {
-
 
     @Test
     void testValidateForSupremeAdmin() {
         PermissionValidator validator = PermissionValidator.builder()
-                .operator("supremeAdmin")
+                .operator("system")
                 .build();
-        assertDoesNotThrow(() -> validator.validate());
+        assertDoesNotThrow(validator::validate, "Validation should not throw an exception for a supreme administrator");
     }
 
     @Test
-    void testValidateForNonSupremeAdminSameUser() {
+    void testValidateForNonSupremeAdminSameCreator() {
         PermissionValidator validator = PermissionValidator.builder()
                 .incidentId(1L)
-                .operator("normalUser")
-                .dbCreator("normalUser")
+                .operator("testUser")
+                .dbCreator("testUser")
                 .build();
-        assertDoesNotThrow(() -> validator.validate());
+        assertDoesNotThrow(validator::validate, "Validation should not throw an exception when the operator and creator are the same");
     }
 
+
     @Test
-    void testValidateForNonSupremeAdminDifferentUser() {
+    void testValidateForNonSupremeAdminDifferentCreator() {
         PermissionValidator validator = PermissionValidator.builder()
                 .incidentId(1L)
-                .operator("differentUser")
-                .dbCreator("originalUser")
+                .operator("testUser")
+                .dbCreator("otherUser")
                 .build();
-
-        Exception exception = assertThrows(PlatformException.class, () -> validator.validate());
-        String expectedMessage = "not permission";
+        Exception exception = assertThrows(PlatformException.class, validator::validate);
+        String expectedMessage = "does not have permission";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
-
     }
+
+
+    @Test
+    void testValidateForNonSupremeAdminWithZeroIncidentId() {
+        PermissionValidator validator = PermissionValidator.builder()
+                .incidentId(0L)
+                .operator("testUser")
+                .dbCreator("otherUser")
+                .build();
+        assertDoesNotThrow(validator::validate, "Validation should not throw an exception when the incident ID is zero");
+    }
+
 }
+
+

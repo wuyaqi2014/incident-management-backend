@@ -23,15 +23,15 @@ public class PermissionValidator implements Validator {
     @Override
     public void validate() {
         if (DataAuthUtil.isSupreme(operator)) {
-            log.info("操作人:{}是超级管理员，无需校验权限", operator);
+            log.info("Operator:{} is a supreme administrator，no need to check permissions", operator);
             return;
         }
         if (incidentId != null && incidentId != 0) {
-            // 不是超级管理员，且操作人和创建人不是一个人， 就不能操作
+            // Not a supreme administrator and the operator is not the same person as the creator, so they cannot operate
             if (!StringUtils.equals(operator, dbCreator)) {
-                log.info("编辑事件id:{}的创建人:{}与本次操作人:{}不一致", incidentId, dbCreator, operator);
-                throw PlatformErrorCode.PARAM_ERROR.toException("操作人:{}没有该事件的编辑权限", operator);
-            }
+                log.info("The creator :{} of the incident id: {} is not consistent with the current operator: {}",
+                        incidentId, dbCreator, operator);
+                throw PlatformErrorCode.PARAM_ERROR.toException("Operator: {} does not have permission to edit this incident", operator);            }
         }
     }
 }

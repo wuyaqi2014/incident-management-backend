@@ -25,21 +25,17 @@ public class UpdateIncidentValidator implements Validator {
 
     @Override
     public void validate() {
-        // 权限校验
         PermissionValidator.builder()
                 .incidentId(incidentId)
                 .operator(operator)
                 .dbCreator(incidentDB.getOperator())
                 .build().validate();
-        // title字段长度校验
         TitleValidator.builder()
                 .title(title)
                 .operator(operator)
                 .incidentRepository(incidentRepository)
                 .incidentId(incidentId)
                 .build().validate();
-        // todo startTime、endTime校验
-        // 状态校验
         UpdateStatusValidator.builder()
                 .incidentDB(incidentDB)
                 .build().validate();
