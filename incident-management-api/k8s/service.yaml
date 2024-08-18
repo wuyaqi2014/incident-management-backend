@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: springboot-app-service
+  name: incident-management-service
 spec:
   type: NodePort
   selector:
-    app: springboot-app
+    app: incident-management-api
   ports:
     - port: 8080
-      targetPort: 8090
+      targetPort: 8080
+      protocol: TCP
       nodePort: 30007  # 节点端口，配置后可通过此端口访问应用

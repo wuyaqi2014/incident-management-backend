@@ -39,6 +39,9 @@ management:
   endpoint:
     health:
       show-details: always
-  metrics: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
   tracing:
     enabled: true

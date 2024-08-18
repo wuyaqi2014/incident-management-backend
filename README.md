@@ -17,10 +17,13 @@
 - [先决条件](#先决条件)
 - [开始使用](#开始使用)
 - [API 端点](#api-端点)
-- [测试](#测试)
 - [部署](#部署)
   - [Docker部署](#docker部署)
   - [k8s部署](#k8s部署)
+- [测试](#测试)
+  - [单元测试](#运行单元测试)
+  - [集成测试](#运行集成测试)
+- [压力测试](#压力测试)
 - [性能测试](#性能测试)
 - [项目架构](#项目架构)
 - [除jdk外的其他依赖包](#除jdk外的其他依赖包)
@@ -66,6 +69,7 @@
     ```bash
     java -jar incident-management-api/target/incident-management-api.jar
     ```
+   // todo 改成curl
    后端将可在浏览器访问： `http://localhost:8080/rest/v1/incident/test` ，页面展示如下，说明后端启动成功。
    ![img_10.png](img/img_10.png)
 
@@ -82,20 +86,9 @@
 - `PUT /rest/v1/incident/update_incident/{id}`：更新一个现有事件。
 - `PUT /rest/v1/incident/delete_incident/{id}`：按 ID 删除一个事件。
 
-## 测试
-### 运行单元测试
-在项目跟目录下，使用一下命令运行单元测试：
-```bash
-mvn clean test
-```
-### 运行集成测试
-在项目跟目录下，使用以下命令运行集成测试：
-```bash
-mvn clean verify -Pintegration-test
-```
+
 ## 部署
 ### Docker部署
-
 1. **构建 Docker 镜像：**
 
    在后端incident-management-api目录下执行以下命令：
@@ -108,13 +101,17 @@ mvn clean verify -Pintegration-test
 
 2. **运行Docker容器：**
     ```bash
-    docker run -d -p 8080:8090 incident-management-api:latest
+    docker run -d -p 9100:8080 --name incident-management-api incident-management-api:latest
     ```
    '-d'：在后台运行容器  
-   '-p 8090:8080'：将容器的 8090 端口映射到主机上的 8080 端口
-3. **浏览器访问：**  
-   现在，后端将可在 `http://localhost:8090/rest/v1/incident/test` 访问。
-
+   '-p 9100:8080'：springboot启动默认端口为8080，将服务的8080端口映射到容器的9100端口上。
+3. **curl请求查看是否启动成功：**  
+   用9100访问localhost
+    ```bash
+    curl http://localhost:9100/rest/v1/incident/test
+    ```
+    输出结果如下：说明启动成功。
+   ![img.png](img/img11.png)
 ### k8s部署
 
 1. **将docker镜像推送到Docker hub：**
@@ -151,6 +148,37 @@ mvn clean verify -Pintegration-test
    对外暴漏30007端口，可访问：  
    现在，后端将可在 `http://localhost:30007/rest/v1/incident/test` 访问。
    ![img_4.png](img/img_4.png)
+
+## 测试
+
+### 运行单元测试
+
+在项目跟目录下，使用一下命令运行单元测试：
+```bash
+mvn clean test
+```
+
+### 运行集成测试
+在项目跟目录下，使用以下命令运行集成测试：
+```bash
+mvn clean verify -Pintegration-test
+```
+
+## 压力测试
+### 使用JMeter进行压力测试
+  下载jmeter，本地安装
+### 执行压力测试
+在incident-management-api/stress-test目录下，使用以下命令执行压力测试，生成测试结果：
+```bash
+jmeter -n -t Thread-Group-5000-threads-1-rampup-5-loop.jmx -l results.jtl
+```
+### 生成 HTML 报告：通过命令行生成 HTML 报告
+在incident-management-api/stress-test目录下，使用以下命令运行集成测试：
+```bash
+jmeter -g results.jtl -o report_output_directory
+```
+### 查看报告
+在报告输出目录下/incident-management-api/stress-test/XXX/report_output_directory 打开 index.html 查看详细的测试结果。
 
 ## 性能测试
 使用springboot actuator 提供的jmx接口进行性能测试。

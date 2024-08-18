@@ -11,7 +11,7 @@ WORKDIR /app
 COPY target/incident-management-api.jar incident-management-api.jar
 
 # 暴露应用在容器内的端口
-EXPOSE 8080
+EXPOSE 9100
 
 # 运行 Spring Boot 应用
 ENTRYPOINT ["java", "-jar", "incident-management-api.jar"]

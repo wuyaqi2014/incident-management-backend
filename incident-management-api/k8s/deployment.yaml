@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springboot-app-deployment
+  name: incident-management-api
 spec:
   replicas: 3  # 副本数量
   selector:
     matchLabels:
-      app: springboot-app
+      app: incident-management-api
   template:
     metadata:
       labels:
-        app: springboot-app
+        app: incident-management-api
     spec:
       containers:
-        - name: springboot-app
+        - name: incident-management-api
           image: aqi2024/incident-management-api:latest  # 使用Docker Hub上的镜像
           ports:
-            - containerPort: 8090
+            - containerPort: 8080
