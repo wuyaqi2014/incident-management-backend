@@ -36,6 +36,7 @@
 - JPA、H2：本地内存数据库
 - Lombok：简化代码
 - JUnit：本地单元测试
+- Jmeter：压力测试
 - Maven：构建管理工具
 - Docker：容器部署
 - K8s：集群部署
@@ -69,10 +70,18 @@
     ```bash
     java -jar incident-management-api/target/incident-management-api.jar
     ```
-   // todo 改成curl
-   后端将可在浏览器访问： `http://localhost:8080/rest/v1/incident/test` ，页面展示如下，说明后端启动成功。
-   ![img_10.png](img/img_10.png)
-
+4. **验证是否启动成功**
+    ```bash
+    curl http://localhost:8080/rest/v1/incident/test
+    ```
+   输出结果如下，说明后端启动成功
+   ![localhost:8080.png](localhost:8080.png)
+5. **查看后端日志**
+   日志在根目录/logs目录下。
+    ```bash
+    tail -f logs/application.log
+    ```
+   
 ### 前端设置
 参考前端项目的[README](https://github.com/wuyaqi2014/incident-management-frontend)
 
@@ -90,14 +99,13 @@
 ## 部署
 ### Docker部署
 1. **构建 Docker 镜像：**
-
-   在后端incident-management-api目录下执行以下命令：
-
+   因Dockerfile在incident-management-api目录下，在该目录下执行以下命令：
     ```bash
     docker build -t incident-management-api:latest .
     ```
-   ![img_7.png](img/img_7.png)  
-   ![img_8.png](img/img_8.png)
+   ![dockerBuild.png](img/dockerBuild.png)  
+   同时在docker-desktop上，可以看到镜像已经构建成功：
+   ![img_8.png](img/docker-desktop-images.png)
 
 2. **运行Docker容器：**
     ```bash
@@ -105,54 +113,91 @@
     ```
    '-d'：在后台运行容器  
    '-p 9100:8080'：springboot启动默认端口为8080，将服务的8080端口映射到容器的9100端口上。
+   '--name':执行容器containername设置为incident-management-api
+   'incident-management-api:latest'：指定要运行的镜像
+   查看docker容器状态：
+   ```bash
+    docker ps | grep incident-management-api
+   ```
+
 3. **curl请求查看是否启动成功：**  
-   用9100访问localhost
+   docker容器对外暴露9100端口，用9100访问localhost
     ```bash
     curl http://localhost:9100/rest/v1/incident/test
     ```
     输出结果如下：说明启动成功。
-   ![img.png](img/img11.png)
+   ![img.png](img/localhost:9100.png)
+4. **查看日志**
+   ```bash
+    docker logs -f --tail 10 incident-management-api
+    ```
+   -f：跟踪日志输出  
+   --tail 10：显示最后10条日志
+   输出结果如下：
+   ![img_1.png](img/docker-logs.png)
+5. **停止和删除容器：**
+   执行以下命令：
+    ```bash
+    docker stop incident-management-api
+    docker rmi incident-management-api
+    ```
+ 
+   
 ### k8s部署
 
 1. **将docker镜像推送到Docker hub：**
-
     ```bash
     docker login
     ```
-   ![img.png](img/img.png)
+   ![img.png](img/docker-login.png)
 2. **标记镜像：**
 
     ```bash
      docker tag  incident-management-api:latest your-dockerhub-username/incident-management-api:latest
     ```
-   ![img_1.png](img/img_1.png)
+   ![img_1.png](img/docker-tag.png)
 3. **推送镜像到Docker Hub：**
     ```bash
    docker push your-dockerhub-username/incident-management-api:latest
     ```
-   ![img_2.png](img/img_2.png)  
-   ![img_3.png](img/img_3.png)
-4. **部署文件：(deployment.yaml)**
-   参考目录：incident-management-api/k8s/deployment.yaml
-   replicas：定义运行的应用副本数量。
-   image：指定容器镜像的地址。
-5. **服务文件 service.yaml**
-   参考目录：incident-management-api/k8s/service.yaml
-   NodePort：将服务暴露在 Kubernetes 集群外部，通过节点的 IP 访问。
+   ![img_2.png](img/docker-push.png)  
+   ![img_3.png](img/docker-desktop-hub.png)
+4. **部署文件：(deployment.yaml)**  
+   参考目录：incident-management-api/k8s/deployment.yaml  
+   `replicas`：定义运行的应用副本数量。  
+   `image`：指定容器镜像的地址。  
+5. **服务文件 service.yaml**  
+   参考目录：incident-management-api/k8s/service.yaml  
+   `type`: NodePort,将服务暴露在 Kubernetes 集群外部，通过节点的 IP 访问。  
 6. **部署到kubernetes集群**
    ```bash
    kubectl apply -f deployment.yaml
    kubectl apply -f service.yaml
     ```
-7. **浏览器访问**   
-   对外暴漏30007端口，可访问：  
-   现在，后端将可在 `http://localhost:30007/rest/v1/incident/test` 访问。
-   ![img_4.png](img/img_4.png)
+   查看启动状态：
+   ```bash
+   kubectl get pods
+   kubectl get svc
+    ```
+7. **curl请求查看是否启动成功：**   
+   k8s对外暴露30007端口，用30007访问localhost
+    ```bash
+    curl http://localhost:30007/rest/v1/incident/test
+    ```
+8. **查看日志**
+    ```bash
+    kubectl logs -f -n default -l app=incident-management-api
+   ```
+9. **停止和删除容器：**
+    ```bash
+    kubectl delete -f deployment.yaml
+    kubectl delete -f service.yaml
+    ```
+   
 
 ## 测试
 
 ### 运行单元测试
-
 在项目跟目录下，使用一下命令运行单元测试：
 ```bash
 mvn clean test
@@ -169,6 +214,9 @@ mvn clean verify -Pintegration-test
   下载jmeter，本地安装
 ### 执行压力测试
 在incident-management-api/stress-test目录下，使用以下命令执行压力测试，生成测试结果：
+定义了两个压力测试：
+![stress-test-5000.png](img/stress-test-2000.png)
+![stress-test-5000.png](img/stress-test-5000.png)
 ```bash
 jmeter -n -t Thread-Group-5000-threads-1-rampup-5-loop.jmx -l results.jtl
 ```
@@ -188,7 +236,7 @@ jmeter -g results.jtl -o report_output_directory
    ```bash
     curl http://localhost:8080/actuator/metrics
     ```
-   ![img_5.png](img/img_5.png)
+   ![img_5.png](img/8080-actuator-metrics.png)
 
 2. **通过curl请求,查看特定指标的数据:**
    ```bash
@@ -206,9 +254,31 @@ jmeter -g results.jtl -o report_output_directory
    ```bash
     curl http://localhost:8080/actuator/prometheus
     ```
-   ![img_6.png](img/img_6.png)
-
-
+   ![img_6.png](img/8080-actuator-prometheus.png)
+5. **启动本地prometheus：**
+   从Prometheus 官方下载页下载和安装 Prometheus  
+   修改prometheus.yml配置文件，添加数据来源
+   ![img_2.png](img/prometheus-yml.png)  
+   到启动prometheus根目录下执行以下命令启动：
+    ```bash
+    ./prometheus --config.file=prometheus.yml
+    ```
+   浏览器打开：http://localhost:9090，查看prometheus数据
+   ![img_3.png](img/9090-prometheus.png)
+6. **启动grafana，导入prometheus数据源:**
+   ```bash
+    brew install grafana
+    brew services start grafana
+    ```
+    打开grafana：http://localhost:3000，默认用户名admin，密码admin   
+    配置数据源：
+      ![img_4.png](img/grafana-datasource.png)
+7. **导入数据看板模板**
+   例如：jvm相关：https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
+   12900-springboot-apm-dashboard：https://grafana.com/grafana/dashboards/12900-springboot-apm-dashboard/
+    ![img_5.png](img/grafana-datacash-12900.png)
+8. **自定义看板数据**
+   ![img_6.png](img/grafana-customer.png)
 
 ## 项目架构：
 

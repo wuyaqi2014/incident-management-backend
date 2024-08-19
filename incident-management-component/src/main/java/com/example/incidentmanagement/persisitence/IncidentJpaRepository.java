@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.incidentmanagement.persisitence.entity.Incident;
@@ -27,6 +28,6 @@ public interface IncidentJpaRepository extends JpaRepository<Incident, Long> {
     @Query("SELECT i FROM Incident i WHERE i.operator = :operator")
     List<Incident> findByOperator(String operator);
 
-    @Query("SELECT i FROM Incident i")
-    Page<Incident> findAllIncidents(Pageable pageable);
+    @Query("SELECT i FROM Incident i where i.operator = :operator order by i.id desc")
+    Page<Incident> findAllIncidents(@Param("operator") String operator, Pageable pageable);
 }
