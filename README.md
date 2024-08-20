@@ -58,7 +58,7 @@
 #### 构建和运行项目
 1. **进入项目目录：**
    ```bash
-    cd incident-management
+    cd incident-management-backend
    ```
 2. **使用maven构建项目：**
 使用 Maven 构建 Spring Boot 后端。会在 `incident-management-api/target` 目录中生成可执行 JAR 文件。  
@@ -75,7 +75,7 @@
     curl http://localhost:8080/rest/v1/incident/test
     ```
    输出结果如下，说明后端启动成功
-   ![localhost:8080.png](localhost:8080.png)
+   ![localhost:8080.png](img/localhost:8080.png)
 5. **查看后端日志**
    日志在根目录/logs目录下。
     ```bash
@@ -99,7 +99,7 @@
 ## 部署
 ### Docker部署
 1. **构建 Docker 镜像：**
-   因Dockerfile在incident-management-api目录下，在该目录下执行以下命令：
+   因Dockerfile所在目录下执行以下命令：
     ```bash
     docker build -t incident-management-api:latest .
     ```
@@ -139,7 +139,7 @@
    执行以下命令：
     ```bash
     docker stop incident-management-api
-    docker rmi incident-management-api
+    docker rm -f incident-management-api
     ```
  
    
@@ -263,19 +263,19 @@ jmeter -g results.jtl -o report_output_directory
     ```bash
     ./prometheus --config.file=prometheus.yml
     ```
-   浏览器打开：http://localhost:9090，查看prometheus数据
+   浏览器打开：[localhost:9090](http://localhost:9090),查看prometheus数据
    ![img_3.png](img/9090-prometheus.png)
 6. **启动grafana，导入prometheus数据源:**
    ```bash
     brew install grafana
     brew services start grafana
     ```
-    打开grafana：http://localhost:3000，默认用户名admin，密码admin   
+    打开grafana：[local:3000](http://localhost:3000)，默认用户名admin，密码admin   
     配置数据源：
       ![img_4.png](img/grafana-datasource.png)
 7. **导入数据看板模板**
-   例如：jvm相关：https://grafana.com/grafana/dashboards/4701-jvm-micrometer/
-   12900-springboot-apm-dashboard：https://grafana.com/grafana/dashboards/12900-springboot-apm-dashboard/
+   例如：[4701-jvm-micrometer](https://grafana.com/grafana/dashboards/4701-jvm-micrometer/)、
+   [12900-springboot-apm-dashboard](https://grafana.com/grafana/dashboards/12900-springboot-apm-dashboard/)
     ![img_5.png](img/grafana-datacash-12900.png)
 8. **自定义看板数据**
    ![img_6.png](img/grafana-customer.png)
