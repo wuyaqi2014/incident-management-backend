@@ -213,7 +213,7 @@ mvn clean verify -Pintegration-test
 ### 使用JMeter进行压力测试
   下载jmeter，本地安装
 ### 执行压力测试
-在incident-management-api/stress-test目录下，使用以下命令执行压力测试，生成测试结果：
+在stress-test目录下，使用以下命令执行压力测试，生成测试结果：
 定义了两个压力测试：
 ![stress-test-5000.png](img/stress-test-2000.png)
 ![stress-test-5000.png](img/stress-test-5000.png)
@@ -221,12 +221,12 @@ mvn clean verify -Pintegration-test
 jmeter -n -t Thread-Group-5000-threads-1-rampup-5-loop.jmx -l results.jtl
 ```
 ### 生成 HTML 报告：通过命令行生成 HTML 报告
-在incident-management-api/stress-test目录下，使用以下命令运行集成测试：
+在stress-test目录下，使用以下命令运行集成测试：
 ```bash
 jmeter -g results.jtl -o report_output_directory
 ```
 ### 查看报告
-在报告输出目录下/incident-management-api/stress-test/XXX/report_output_directory 打开 index.html 查看详细的测试结果。
+在报告输出目录下/stress-test/XXX/report_output_directory 打开 index.html 查看详细的测试结果。
 
 ## 性能测试
 使用springboot actuator 提供的jmx接口进行性能测试。
@@ -274,7 +274,7 @@ jmeter -g results.jtl -o report_output_directory
     配置数据源：
       ![img_4.png](img/grafana-datasource.png)
 7. **导入数据看板模板**
-   例如：[4701-jvm-micrometer](https://grafana.com/grafana/dashboards/4701-jvm-micrometer/)、
+   例如：[4701-jvm-micrometer](https://grafana.com/grafana/dashboards/4701-jvm-micrometer/)
    [12900-springboot-apm-dashboard](https://grafana.com/grafana/dashboards/12900-springboot-apm-dashboard/)
     ![img_5.png](img/grafana-datacash-12900.png)
 8. **自定义看板数据**
