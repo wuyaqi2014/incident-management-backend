@@ -22,7 +22,7 @@
       <hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="create_incident">
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.port">30007</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.path">/rest/v1/incident/create_incident</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -36,6 +36,7 @@
                 <stringProp name="Argument.value">{&#xd;
     &quot;title&quot;: &quot;title_${__RandomString(5,abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,)}&quot;,&#xd;
     &quot;description&quot;: &quot;distription_${__RandomString(10,abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,)}&quot;,&#xd;
+    &quot;startTime&quot;: &quot;${__time()}&quot;,&#xd;
     &quot;startTime&quot;: &quot;${__time()}&quot;,&#xd;
     &quot;endTime&quot;: &quot;${__time()}&quot;&#xd;
 }</stringProp>
