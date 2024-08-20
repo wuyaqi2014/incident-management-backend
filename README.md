@@ -12,6 +12,10 @@
 - **权限校验**：有super管理员权限：admin或者system，非管理员用户只能查看自己创建的事件。
 - **高效的事件查询**：事件表有两个索引：主键id聚簇索引，operator操作人索引，因代码中增加了权限校验，用operator查询的场景比较多。
 
+## 视频介绍：
+按功能模块拆分，分别演示以下操作：
+[readme-video](https://fcndn6gpcl78.feishu.cn/wiki/QXHlwanCAixmHZkOQd1cnQdgnHu)
+
 ## 目录
 - [技术栈](#技术栈)
 - [先决条件](#先决条件)
